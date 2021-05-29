@@ -1,0 +1,80 @@
+package first;
+
+import java.util.*;
+
+public class yetAnotherCorona {
+public static void main(String[] args) {
+	Scanner s=new Scanner(System.in);
+	int n=s.nextInt();
+	int h=s.nextInt();
+	int x=s.nextInt();
+	int[][] arr=new int[n][n];
+	int[] hots=new int[h];
+	for(int i=0;i<h;i++)
+	{
+		hots[i]=s.nextInt()-1;
+	}
+	for(int i=0;i<n;i++)
+	{
+		for(int j=0;j<n;j++)
+		{
+			arr[i][j]=1000000;;
+		}
+	}
+	for(int i=0;i<n-1;i++)
+	{
+		int a=s.nextInt()-1;
+		int b=s.nextInt()-1;
+		arr[a][b]=1;
+		arr[b][a]=1;
+	}
+	
+	int[][] dp=floydWarshall(arr,n);
+	
+	HashSet<Integer> set=new HashSet<Integer>();
+	for(int i=0;i<n;i++)
+	{
+		set.add(i);
+	}
+	for(int i=0;i<h;i++)
+	{
+		ArrayList<Integer> temp=new ArrayList<Integer>();
+		for(int k:set)
+		{
+			if(dp[hots[i]][k]>x)
+			{
+				temp.add(k);
+			}
+		}
+		for(int p:temp)
+		{
+			set.remove(p);
+		}
+	}
+	System.out.println(set.size());
+}
+static int[][] floydWarshall(int graph[][],int V)
+{
+    int dist[][] = new int[V][V];
+    int i, j, k;
+
+    for (i = 0; i < V; i++)
+        for (j = 0; j < V; j++)
+            dist[i][j] = graph[i][j];
+    for (k = 0; k < V; k++)
+    {
+        for (i = 0; i < V; i++)
+        {
+            for (j = 0; j < V; j++)
+            {
+                if (dist[i][k] + dist[k][j] < dist[i][j])
+                {
+                	
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
+            }
+        }
+    }
+    return dist;
+}
+}
